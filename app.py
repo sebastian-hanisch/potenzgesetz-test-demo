@@ -70,7 +70,7 @@ with st.expander("So prüft der Test", expanded=True):
 2. **Anpassung:** für jede Untergrenze xmin den Exponenten per Maximum Likelihood schätzen; xmin ist die Untergrenze mit dem kleinsten **KS-Abstand** zwischen Daten und angepasstem Potenzgesetz.
 3. **Güte:** viele synthetische Stichproben aus dem angepassten Potenzgesetz (mit den Daten unter xmin), jeweils neu angepasst; der Anteil mit mindestens dem beobachteten KS-Abstand ist der **p-Wert**. Unter 0,1 wird das Potenzgesetz verworfen.
 4. **Vergleich:** Log-Likelihood-Quotient (Vuong) gegen Log-Normal und Exponential auf demselben Schwanz; nur bei p unter 0,1 entscheidet das Vorzeichen, sonst bleibt es **unentschieden**.
-5. **Hill-Kurve:** der Exponent aus den größten Werten, aufgetragen über dem Schwanzanteil: bleibt sie flach, ist der Schwanz mit einem Potenzgesetz vereinbar. Für die Beurteilung zählen nur Anteile mit mindestens 100 Werten im Schwanz.
+5. **Hill-Kurve:** der Exponent aus den größten Werten, aufgetragen über dem Schwanzanteil: bleibt sie flach, ist der Schwanz mit einem Potenzgesetz vereinbar (eine flache Kurve zeigt Stabilität, keinen Beweis). Für die Beurteilung zählen nur Anteile mit mindestens 100 Werten im Schwanz.
         """
     )
 
@@ -148,7 +148,7 @@ with tab1:
         getattr(st, kind)(text)
         st.caption(f"Rechenzeit dieser Sitzung: {num(st.session_state['types_done'], 1)} s (beim ersten Mal; danach liegt das Ergebnis im Zwischenspeicher).")
 with tab2:
-    st.markdown("**Wer wenige Werte hat, kann Log-Normal und Potenzgesetz nicht trennen.** Anteil der Stichproben, bei denen der Vergleich unentschieden bleibt, über der Stichprobengröße.")
+    st.markdown("**Wer wenige Werte hat, kann Log-Normal und Potenzgesetz oft nicht trennen.** Anteil der Stichproben, bei denen der Vergleich unentschieden bleibt, über der Stichprobengröße.")
     if st.button("Reihe rechnen", key="power_button"):
         t0 = time.perf_counter()
         with st.spinner("Rechne die Reihe (etwa 30 bis 60 Sekunden) …"):
@@ -178,7 +178,7 @@ st.markdown(
 |---|---|---|
 | **Frage** | Folgt der Schwanz einem Potenzgesetz, das besser passt als die Alternativen? | Hat der Schwanz eine regelmäßig variierende Form mit Exponent zwischen 2 und 3? |
 | **Werkzeug** | Maximum Likelihood, Güte durch Bootstrap, Vergleich mit Alternativen (diese Demo oben) | Hill-Schätzer und seine Stabilitätskurve (diese Demo oben, rechts) |
-| **Folge** | Wenige Netze bestehen den Test | Mehr Netze gelten als skalenfrei |
+| **Folge** (nach der Literatur, nicht in dieser Demo gemessen) | Wenige Netze bestehen den Test | Mehr Netze gelten als skalenfrei |
 | **Was die Demo zeigt** | Wie oft ein exaktes Potenzgesetz verworfen und eine Log-Normal-Verteilung nicht erkannt wird | Wie stabil die Kurve bei Potenzgesetz und Log-Normal ist |
 
 Die Demo entscheidet nicht, welche Lesart die richtige ist; sie zeigt, was jede der beiden Rechnungen an Stichproben mit **bekanntem** Ursprung liefert. Zuordnung zu den Arbeiten: aus dem Gedächtnis, nicht im Original geprüft (Broido und Clauset 2019 für die strenge Lesart, Voitalov und andere 2019 für die weite).

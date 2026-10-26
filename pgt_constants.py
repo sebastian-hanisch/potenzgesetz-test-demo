@@ -52,7 +52,7 @@ PRESETS = {
 }
 PRESET_HELP = {
     "Exaktes Potenzgesetz (α = 2,5)": "3 000 Werte, exakt aus einem Potenzgesetz gezogen: der Test sollte es nicht verwerfen und den Exponenten nahe 2,5 schätzen.",
-    "Log-Normal, kleine Stichprobe": "1 000 Log-Normal-Werte: bei so wenigen Werten wird das Potenzgesetz nicht verworfen, und der Vergleich mit der Log-Normal-Verteilung bleibt unentschieden.",
+    "Log-Normal, kleine Stichprobe": "1 000 Log-Normal-Werte: bei so wenigen Werten wird das Potenzgesetz oft nicht verworfen, und der Vergleich mit der Log-Normal-Verteilung bleibt oft unentschieden (in diesem Lauf: ja, in anderen nicht).",
     "Log-Normal, große Stichprobe": "9 000 Log-Normal-Werte: mit mehr Daten wird der Unterschied sichtbar, das Potenzgesetz wird verworfen und die Log-Normal-Verteilung passt klar besser.",
     "Poisson-Grade (Zufallsnetz)": "Grade eines Zufallsnetzes ohne Hubs: der Test verwirft das Potenzgesetz klar.",
     "Barabási–Albert-Netz": "Grade eines gewachsenen Netzes mit bevorzugter Anbindung (3 000 Knoten): das Potenzgesetz wird nicht verworfen; die Messreihe zeigt, wie oft das bei anderen Zufalls-Seeds so ausgeht.",

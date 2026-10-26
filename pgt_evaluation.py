@@ -180,7 +180,8 @@ def verdict_types(rows: list[dict]) -> tuple[str, str]:
     return "info", (
         f"Bei n = {C.SERIES_N} (je {first['reps']} Stichproben) wird das exakte Potenzgesetz in {num(first['plausible'] * 100, 0)} % nicht verworfen, "
         f"Log-Normal in {num(by['lognormal']['plausible'] * 100, 0)} %, das Barabási–Albert-Netz in {num(by['ba']['plausible'] * 100, 0)} % und Poisson in {num(by['poisson']['plausible'] * 100, 0)} %; "
-        f"eine klar bessere Log-Normal-Verteilung findet der Vergleich beim exakten Potenzgesetz in {num(first['ln_better'] * 100, 0)} %, beim Barabási–Albert-Netz in {num(by['ba']['ln_better'] * 100, 0)} %."
+        f"eine klar bessere Log-Normal-Verteilung findet der Vergleich beim exakten Potenzgesetz in {num(first['ln_better'] * 100, 0)} %, beim Barabási–Albert-Netz in {num(by['ba']['ln_better'] * 100, 0)} %. "
+        f"Bei nur {first['reps']} Stichproben je Quelle sind die Anteile grob (bei 90 % reicht ihr Unsicherheitsbereich von etwa 55 bis 98 %); dass ein echtes Potenzgesetz bei der Schwelle p = 0,1 in etwa 10 % verworfen wird, ist durch die Schwelle so zu erwarten."
     )
 
 
@@ -190,7 +191,8 @@ def verdict_power(rows: list[dict]) -> tuple[str, str]:
     lo, hi = ln[0], ln[-1]
     return "info", (
         f"Bei Log-Normal-Daten bleibt der Vergleich mit dem Potenzgesetz bei n = {lo['n']} in {num(lo['undecided'] * 100, 0)} % unentschieden und bei n = {hi['n']} in {num(hi['undecided'] * 100, 0)} %; "
-        f"die Log-Normal-Verteilung gewinnt klar in {num(lo['ln_better'] * 100, 0)} % bzw. {num(hi['ln_better'] * 100, 0)} %. Wer wenige Werte hat, kann beide Verteilungen nicht trennen."
+        f"die Log-Normal-Verteilung gewinnt klar in {num(lo['ln_better'] * 100, 0)} % bzw. {num(hi['ln_better'] * 100, 0)} %. Wer wenige Werte hat, kann beide Verteilungen oft nicht trennen: „unentschieden“ heißt hier, dass der Vergleich nicht entscheidet (p ≥ 0,1), nicht dass die Verteilungen ununterscheidbar sind. "
+        f"Je Größe sind es nur {C.POWER_REPS} Stichproben, die Anteile sind daher grob."
     )
 
 
