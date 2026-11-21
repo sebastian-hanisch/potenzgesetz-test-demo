@@ -63,7 +63,7 @@ def test_hill_curve_usable_counts_only_fractions_with_enough_values():
 def test_hill_verdict_threshold_and_numbers():
     kind, text = ev.verdict_hill(make(hill_curve=[(0.05, 2.5), (0.1, 2.6), (0.5, 2.8)], hill=2.6))
     assert kind == "success" and "Spannweite 0,30" in text and "stabil" in text and "nicht stabil" not in text      # genau an der Schwelle: noch stabil
-    assert "Schwanzanteil 10 %: 2,60" in text and "von 5 % bis 50 % (mindestens 100 Werte im Schwanz)" in text and "zwischen 2,50 und 2,80" in text
+    assert "Tail-Anteil 10 %: 2,60" in text and "von 5 % bis 50 % (mindestens 100 Werte im Tail)" in text and "zwischen 2,50 und 2,80" in text
     kind, text = ev.verdict_hill(make(hill_curve=[(0.05, 2.5), (0.1, 2.6), (0.5, 2.81)], hill=2.6))
     assert kind == "info" and "nicht stabil (Spannweite 0,31)" in text
 
@@ -103,4 +103,4 @@ def test_hill_series_verdict():
     rows = [dict(source=s, name=s, spread=v) for s, v in (("powerlaw", 0.13), ("ba", 0.15), ("lognormal", 1.09), ("poisson", 7.27))]
     kind, text = ev.verdict_hill_series(rows)
     assert kind == "info" and "exaktes Potenzgesetz 0,13" in text and "Barabási–Albert 0,15" in text and "Log-Normal 1,09" in text and "Poisson 7,27" in text
-    assert "Schwanzanteile 2 % bis 50 %" in text
+    assert "Tail-Anteile 2 % bis 50 %" in text

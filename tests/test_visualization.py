@@ -29,7 +29,7 @@ def test_ccdf_figure_has_data_and_three_fitted_curves(analysis):
     assert fig.layout.xaxis.type == "log" and fig.layout.yaxis.type == "log"
     assert len(fig.layout.shapes) == 1 and fig.layout.shapes[0].x0 == analysis.xmin        # die Linie bei der Untergrenze
     pl = fig.data[1]
-    # bei der Untergrenze liegt die angepasste Kurve beim Anteil der Werte im Schwanz
+    # bei der Untergrenze liegt die angepasste Kurve beim Anteil der Werte im Tail
     assert pl.x[0] == analysis.xmin and pl.y[0] == pytest.approx(analysis.ntail / len(analysis.x))
     assert fig.data[2].y[0] == pytest.approx(analysis.ntail / len(analysis.x)) and fig.data[3].y[0] == pytest.approx(analysis.ntail / len(analysis.x))
 

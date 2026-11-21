@@ -4,7 +4,7 @@ N_MIN, N_MAX, DEFAULT_N = 500, 10000, 3000      # Stichprobe: Zahl der Knoten (G
 ALPHA_MIN, ALPHA_MAX, DEFAULT_ALPHA = 2.0, 3.5, 2.5      # Exponent des Erzeugers (Potenzgesetz und Potenzgesetz mit Abbruch)
 SIGMA_MIN, SIGMA_MAX, DEFAULT_SIGMA = 0.5, 2.0, 1.1      # Streuung des Log-Normal-Erzeugers
 NBOOT_MIN, NBOOT_MAX, DEFAULT_NBOOT = 10, 100, 30        # Wiederholungen des Bootstraps der Güte
-FRAC_MIN, FRAC_MAX, DEFAULT_FRAC = 2, 50, 10             # Schwanzanteil des Hill-Schätzers in Prozent
+FRAC_MIN, FRAC_MAX, DEFAULT_FRAC = 2, 50, 10             # Tail-Anteil des Hill-Schätzers in Prozent
 SEED_MAX, DEFAULT_SEED = 999999, 19   # Standard-Seed 19: zeigt bei allen Schnellstart-Szenarien den häufigen Ausgang (README nennt die Auswahl)
 
 SOURCES = {
@@ -29,9 +29,9 @@ NMIN_TAIL = 50       # mindestens so viele Werte müssen oberhalb der Untergrenz
 NCAND = 25           # höchstens so viele Kandidaten für die Untergrenze (die kleinsten)
 P_PLAUSIBLE = 0.1    # Güte p ≥ 0,1: das Potenzgesetz wird nicht verworfen
 P_VUONG = 0.1        # Vorzeichen des Vuong-Tests zählt nur bei p < 0,1
-HILL_FRACS = (0.02, 0.05, 0.1, 0.2, 0.35, 0.5)   # Schwanzanteile der Stabilitätskurve
+HILL_FRACS = (0.02, 0.05, 0.1, 0.2, 0.35, 0.5)   # Tail-Anteile der Stabilitätskurve
 HILL_STABLE_SPREAD = 0.3    # Spannweite der Hill-Kurve bis dahin „stabil“
-HILL_MIN_COUNT = 100        # nur Schwanzanteile mit mindestens so vielen Werten zählen für die Stabilität (bei weniger dominiert der Zufallsfehler)
+HILL_MIN_COUNT = 100        # nur Tail-Anteile mit mindestens so vielen Werten zählen für die Stabilität (bei weniger dominiert der Zufallsfehler)
 
 # feste Pläne der Messreihen (nie ein einzelner Seed)
 SERIES_SEED = 100000     # Stichprobe j einer Reihe hat den Seed SERIES_SEED + j

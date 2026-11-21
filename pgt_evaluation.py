@@ -29,7 +29,7 @@ class Settings:
 
 @dataclass(frozen=True)
 class Comparison:
-    """Vuong-Vergleich des Potenzgesetzes mit einer Alternative auf demselben Schwanz."""
+    """Vuong-Vergleich des Potenzgesetzes mit einer Alternative auf demselben Tail."""
 
     name: str
     r: float          # Summe der Log-Likelihood-Differenzen (Potenzgesetz minus Alternative)
@@ -51,7 +51,7 @@ class Analysis:
     lognormal: tuple = (float("nan"), float("nan"))      # (μ, σ) der angepassten Log-Normal-Verteilung
     lam: float = float("nan")                            # λ der angepassten Exponentialverteilung
     hill_curve: list = field(default_factory=list)       # [(Anteil, Schätzwert)]
-    hill: float = float("nan")                           # Hill-Schätzer beim gewählten Schwanzanteil
+    hill: float = float("nan")                           # Hill-Schätzer beim gewählten Tail-Anteil
 
 
 def decide(r: float, p: float) -> str:
@@ -122,7 +122,7 @@ def series_power(ns=C.POWER_NS, reps: int = C.POWER_REPS, sources=("lognormal", 
 
 
 def series_hill(n: int = C.SERIES_N, reps: int = C.SERIES_REPS, sources=("powerlaw", "lognormal", "ba", "poisson")) -> list[dict]:
-    """Median der Hill-Schätzwerte je Schwanzanteil (Stabilitätskurve) und Spannweite der Kurve."""
+    """Median der Hill-Schätzwerte je Tail-Anteil (Stabilitätskurve) und Spannweite der Kurve."""
     rows = []
     for src in sources:
         samples = [_sample(src, n, j) for j in range(reps)]
@@ -140,7 +140,7 @@ WINNER_TEXT = {"powerlaw": "Potenzgesetz klar besser", "alternative": "Alternati
 def verdict_test(a: Analysis) -> tuple[str, str]:
     """Kernfrage der Hauptansicht: wird das Potenzgesetz verworfen, und was sagen die Vergleiche mit den Alternativen?"""
     n = len(a.x)
-    head = f"Angepasst ab xmin = {a.xmin} mit α̂ = {num(a.alpha, 2)} ({a.ntail} von {n} Werten im Schwanz), KS-Abstand {num(a.ks, 3)}, Güte p = {num(a.p, 2)}."
+    head = f"Angepasst ab xmin = {a.xmin} mit α̂ = {num(a.alpha, 2)} ({a.ntail} von {n} Werten im Tail), KS-Abstand {num(a.ks, 3)}, Güte p = {num(a.p, 2)}."
     comps = "; ".join(f"gegen {c.name}: {WINNER_TEXT[c.winner]} (p = {num(c.p, 2)})" for c in a.comparisons.values())
     better = [c.name for c in a.comparisons.values() if c.winner == "alternative"]
     if a.p < C.P_PLAUSIBLE:
@@ -154,23 +154,23 @@ def verdict_test(a: Analysis) -> tuple[str, str]:
 
 
 def hill_curve_usable(curve, n: int) -> list:
-    """Punkte der Hill-Kurve, bei denen mindestens HILL_MIN_COUNT Werte im Schwanz liegen und der Schätzwert definiert ist."""
+    """Punkte der Hill-Kurve, bei denen mindestens HILL_MIN_COUNT Werte im Tail liegen und der Schätzwert definiert ist."""
     return [(f, v) for f, v in curve if max(10, int(f * n)) >= C.HILL_MIN_COUNT and v == v]
 
 
 def verdict_hill(a: Analysis) -> tuple[str, str]:
-    """Hill-Schätzer: Wert beim gewählten Schwanzanteil und Spannweite der Kurve über die Anteile mit genug Werten."""
+    """Hill-Schätzer: Wert beim gewählten Tail-Anteil und Spannweite der Kurve über die Anteile mit genug Werten."""
     use = hill_curve_usable(a.hill_curve, len(a.x))
-    head = f"Hill-Schätzer beim Schwanzanteil {a.settings.frac} %: {num(a.hill, 2)}"
+    head = f"Hill-Schätzer beim Tail-Anteil {a.settings.frac} %: {num(a.hill, 2)}"
     if len(use) < 2:
-        return "info", f"{head}. Für die Stabilität reichen die Werte nicht: nur Schwanzanteile mit mindestens {C.HILL_MIN_COUNT} Werten zählen, und davon gibt es hier weniger als zwei."
+        return "info", f"{head}. Für die Stabilität reichen die Werte nicht: nur Tail-Anteile mit mindestens {C.HILL_MIN_COUNT} Werten zählen, und davon gibt es hier weniger als zwei."
     vals = [v for _, v in use]
     spread = max(vals) - min(vals)
-    head += (f"; über die Anteile von {num(use[0][0] * 100, 0)} % bis {num(use[-1][0] * 100, 0)} % (mindestens {C.HILL_MIN_COUNT} Werte im Schwanz) "
+    head += (f"; über die Anteile von {num(use[0][0] * 100, 0)} % bis {num(use[-1][0] * 100, 0)} % (mindestens {C.HILL_MIN_COUNT} Werte im Tail) "
              f"liegt er zwischen {num(min(vals), 2)} und {num(max(vals), 2)}")
     if spread <= C.HILL_STABLE_SPREAD:
-        return "success", f"{head}: die Kurve ist stabil (Spannweite {num(spread, 2)}), das ist mit einem Potenzgesetz im Schwanz vereinbar."
-    return "info", f"{head}: die Kurve ist nicht stabil (Spannweite {num(spread, 2)}), der Schätzwert hängt davon ab, wie viel vom Schwanz man nimmt."
+        return "success", f"{head}: die Kurve ist stabil (Spannweite {num(spread, 2)}), das ist mit einem Potenzgesetz im Tail vereinbar."
+    return "info", f"{head}: die Kurve ist nicht stabil (Spannweite {num(spread, 2)}), der Schätzwert hängt davon ab, wie viel vom Tail man nimmt."
 
 
 def verdict_types(rows: list[dict]) -> tuple[str, str]:
@@ -200,6 +200,6 @@ def verdict_hill_series(rows: list[dict]) -> tuple[str, str]:
     """Messreihe Hill-Kurve: Spannweite je Quelle."""
     by = {r["source"]: r for r in rows}
     return "info", (
-        f"Spannweite der Hill-Kurve (Median über {C.SERIES_REPS} Stichproben, Schwanzanteile {num(C.HILL_FRACS[0] * 100, 0)} % bis {num(C.HILL_FRACS[-1] * 100, 0)} %): "
+        f"Spannweite der Hill-Kurve (Median über {C.SERIES_REPS} Stichproben, Tail-Anteile {num(C.HILL_FRACS[0] * 100, 0)} % bis {num(C.HILL_FRACS[-1] * 100, 0)} %): "
         f"exaktes Potenzgesetz {num(by['powerlaw']['spread'], 2)}, Barabási–Albert {num(by['ba']['spread'], 2)}, Log-Normal {num(by['lognormal']['spread'], 2)}, Poisson {num(by['poisson']['spread'], 2)}."
     )

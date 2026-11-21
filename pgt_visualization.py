@@ -44,15 +44,15 @@ def build_ccdf(a):
 
 
 def build_hill(a):
-    """Hill-Schätzer über dem Schwanzanteil (Stabilitätskurve) neben dem Exponenten der Anpassung; der gewählte Anteil ist markiert."""
+    """Hill-Schätzer über dem Tail-Anteil (Stabilitätskurve) neben dem Exponenten der Anpassung; der gewählte Anteil ist markiert."""
     fr = [f * 100 for f, _ in a.hill_curve]
     vals = [v for _, v in a.hill_curve]
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=[min(fr), max(fr)], y=[a.alpha, a.alpha], mode="lines", line=dict(color=C.COLOR_THEORY, width=2, dash="dash"), name="Exponent der Anpassung"))
     fig.add_trace(go.Scatter(x=fr, y=vals, mode="lines+markers", line=dict(color=C.COLOR_MEASURED, width=3), name="Hill-Schätzer",
-                             hovertemplate="Schwanzanteil %{x:.0f} %: %{y:.2f}<extra></extra>"))
+                             hovertemplate="Tail-Anteil %{x:.0f} %: %{y:.2f}<extra></extra>"))
     fig.add_vline(x=a.settings.frac, line=dict(color=C.COLOR_ALERT, width=1.5, dash="dash"))
-    fig.update_xaxes(title_text="Schwanzanteil (%)", type="log")
+    fig.update_xaxes(title_text="Tail-Anteil (%)", type="log")
     fig.update_yaxes(title_text="geschätzter Exponent")
     return _base(fig)
 
@@ -83,12 +83,12 @@ def build_power(rows):
 
 
 def build_hill_series(rows):
-    """Hill-Kurven (Median über die festen Stichproben) je Quelle über dem Schwanzanteil."""
+    """Hill-Kurven (Median über die festen Stichproben) je Quelle über dem Tail-Anteil."""
     colors = {"powerlaw": C.COLOR_THEORY, "lognormal": C.COLOR_THIRD, "ba": C.COLOR_MEASURED, "poisson": C.COLOR_ALERT}
     fig = go.Figure()
     for r in rows:
         fig.add_trace(go.Scatter(x=[f * 100 for f, _ in r["curve"]], y=[v for _, v in r["curve"]], mode="lines+markers", line=dict(color=colors.get(r["source"], C.COLOR_MEASURED), width=3), name=r["name"],
-                                 hovertemplate="Schwanzanteil %{x:.0f} %: %{y:.2f}<extra></extra>"))
-    fig.update_xaxes(title_text="Schwanzanteil (%)", type="log")
+                                 hovertemplate="Tail-Anteil %{x:.0f} %: %{y:.2f}<extra></extra>"))
+    fig.update_xaxes(title_text="Tail-Anteil (%)", type="log")
     fig.update_yaxes(title_text="geschätzter Exponent (Median)", type="log")
     return _base(fig, height=420)
